@@ -4,6 +4,7 @@ const state = {
     stocks: []
 };
 
+//this.$store.commit();
 const mutations = {
     'SET_STOCKS'(state, stocks) {
         state.stocks = stocks;
@@ -21,6 +22,7 @@ const mutations = {
     }
 }
 
+//this.$store.dispatch(function, data)
 const actions = {
     buyStock: ({ commit }, order) => {
         commit('BUY_STOCK', order);
@@ -35,6 +37,7 @@ const actions = {
     }
 }
 
+//this.$store.getters.stocks
 const getters = {
     stocks: state => {
         return state.stocks;

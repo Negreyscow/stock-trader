@@ -1,23 +1,22 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router';
 import App from './App.vue'
 import VueResource from 'vue-resource';
-import { routes } from './routes';
+import router from './routes';
 import { store } from './store/store';
+import axios from 'axios';
+import VueRouter from 'vue-router'
+
+axios.defaults.baseURL = 'https://vuejs-1b1c4.firebaseio.com/';
+
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
 
-Vue.http.options.root = 'https://vuejs-1b1c4.firebaseio.com/';
+//Vue.http.options.root = '';
 
 Vue.filter('currency', (value) => {
   value = value.toFixed(2);
   return '$' + value.toLocaleString();
-});
-
-const router = new VueRouter({
-  routes,
-  mode: 'history'
 });
 
 new Vue({

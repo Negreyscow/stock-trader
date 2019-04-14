@@ -14,24 +14,37 @@
     </button>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <router-link class="nav-link" tag="li" :to="{ name: 'Portfolio'}" activeClass="active">
+        <router-link
+          class="nav-link"
+          tag="li"
+          :to="{ name: 'Portfolio'}"
+          activeClass="active"
+          v-if="isAuthorized()"
+        >
           <a>Portfolio</a>
         </router-link>
-        <router-link class="nav-link" :to="{ name: 'StockPage' }" activeClass="active" tag="li">
+        <router-link
+          class="nav-link"
+          v-if="isAuthorized()"
+          :to="{ name: 'StockPage' }"
+          activeClass="active"
+          tag="li"
+        >
           <a>Stocks</a>
         </router-link>
       </ul>
     </div>
     <form class="form-inline" style="margin-right: 100px">
       <ul class="nav navbar-nav navbar-right">
-        <li class="nav-item">
+        <li class="nav-item" v-if="isAuthorized()">
           <a class="nav-link" href="#" @click="endDay()">End Day</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="isAuthorized()">
           <a class="nav-link" href="#">Founds: {{ getFunds | currency}}</a>
         </li>
+        <!-- 
         <li class="nav-item dropdown">
-          <div class="align-left">
+          <div class="align-left" v-if="isAuthorized()">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -46,18 +59,25 @@
               <a class="dropdown-item" @click="loadData()" href="#">Load</a>
             </div>
           </div>
+        </li>-->
+        <li class="nav-item log-out" v-if="isAuthorized()">
+          <a class="nav-link" href="#" @click="logOut()">Logout</a>
         </li>
       </ul>
     </form>
   </nav>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import globalAxios from "axios";
 export default {
   data() {
     return {
       isDropdownOpen: false
     };
+  },
+  created() {
+    this.$store.dispatch("fetchUser");
   },
   computed: {
     getFunds() {
@@ -67,22 +87,24 @@ export default {
   methods: {
     ...mapActions({
       randomizeStocks: "randomizeStocks",
-      fetchData: "loadData"
+      fetchData: "loadData",
+      logout: "logout"
+    }),
+    ...mapGetters({
+      getId: "getUserId",
+      isAuth: "isAuthenticated",
+      getTokenId: "getIdToken"
     }),
     endDay() {
       this.randomizeStocks();
     },
-    saveData() {
-      const data = {
-        funds: this.$store.getters.funds,
-        stockPortfolio: this.$store.getters.stockPortfolio,
-        stocks: this.$store.getters.stocks
-      };
-      this.$http.put("StockTraderSave.json", data);
+
+    isAuthorized() {
+      return this.isAuth();
     },
 
-    loadData() {
-      this.fetchData();
+    logOut() {
+      this.logout();
     }
   }
 };
