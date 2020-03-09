@@ -1,21 +1,37 @@
 <template>
-  <div class="row flex-fill d-flex justify-content-center">
-    <div class="d-flex justify-content-center" style="margin: 10px">
-      <select v-model="selected" class="custom-select">
-        <option disabled value>Order by</option>
-        <option>Price</option>
-        <option>Name</option>
-      </select>
-      <select v-model="order" class="custom-select">
-        <option disabled value>Order by</option>
-        <option>Descending</option>
-        <option>Ascending</option>
-      </select>
-      <button class="btn btn-outline-secondary" @click="updateItems">Apply</button>
+  <div style="width: 100%">
+
+    <div class="row d-flex" style="justify-content: center">
+        <select v-model="selected" class="custom-select" style="width: 200px">
+          <option disabled value>Order by</option>
+          <option>Price</option>
+          <option>Name</option>
+        </select>
+
+        <button v-if="order == 'Ascending'" type="button" class="btn btn-default" @click="ordering">
+          <span> <i class="fa fa-caret-down" aria-hidden="true"></i> </span>
+        </button>
+
+        <button v-else type="button" class="btn btn-default" @click="ordering">
+          <span> <i class="fa fa-caret-up" aria-hidden="true"></i> </span>
+        </button>
+
+        <!-- <select v-model="order" class="custom-select" style="width: 200px">
+          <option disabled value>Order by</option>
+          <option>Descending</option>
+          <option>Ascending</option>
+        </select> -->
+        <!-- <button class="btn btn-outline-secondary" @click="updateItems" style="width: 200px">
+          Apply
+        </button> -->
     </div>
-    <transition-group class="row d-flex justify-content-center" name="list-complete" tag="div">
-      <app-stock v-for="stock in stocks" :stock="stock" :key="stock.id" class="list-complete-item"></app-stock>
-    </transition-group>
+
+    <div class="row d-flex" style="justify-content: center">
+      <transition-group class="row d-flex justify-content-center" name="list-complete" tag="div">
+        <app-stock v-for="stock in stocks" :stock="stock" :key="stock.id" class="list-complete-item"></app-stock>
+      </transition-group>
+    </div>
+
   </div>
 </template>
 
@@ -29,6 +45,11 @@ export default {
     };
   },
   mixins: [orderStocksMixin],
+  watch: {
+    selected(){
+      this.updateItems()
+    }
+  },
   computed: {
     stocks() {
       return this.$store.getters.stockPortfolio;

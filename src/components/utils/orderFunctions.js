@@ -6,6 +6,15 @@ export const orderStocksMixin = {
         };
     },
     methods: {
+
+        ordering(){
+            if (this.order == 'Ascending')
+                this.order = 'Descending'
+            else 
+                this.order = 'Ascending'
+            this.updateItems()
+        },
+
         updateItems() {
             if (this.selected == "") {
                 alert("You need to choose an order method!");
