@@ -1,28 +1,35 @@
 <template>
-  <div class="col-md-3 card-padding">
+  <div class="card-padding">
     <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">{{ stock.name }}</h3>
-        <div
-          class="card-subtitle"
-        >(Price: {{ stock.price.toFixed(2) }} | Quantity: {{ stock.quantity }})</div>
+      <div class="card-header d-flex bd-highlight">
+        <div class="p-2 flex-fill bd-highlight">
+          <h3 class="card-title font-sizing">{{ stock.name }}</h3>
+          <div class="card-subtitle">
+            Price: {{ stock.price.toFixed(2) }}
+            <br>
+            Quantity: {{ stock.quantity }}
+          </div>
+        </div>
+        <div class="p-2 flex-fill bd-highlight">
+          <img class="img-size" :src=" '../../assets/' + stock.img">
+        </div>
       </div>
       <div class="card-body">
-        <div class="row">
+        <div class="d-flex justify-content-center">
           <input
             type="number"
             class="form-control"
             style="display: block-inline; width: 30%;"
             placeholder="Quantity"
             v-model="quantity"
-            :class="{danger: insuficientFunds}"
+            :class="{danger: insufficientQuantity}"
           >
           <button
             @click="sellStock()"
             class="btn btn-info"
-            :disabled="insuficientFunds || quantity <= 0"
-            style="float: right; "
-          >{{ insuficientFunds ? 'Insuficient quantity' : 'Sell' }}</button>
+            :disabled="insufficientQuantity || quantity <= 0"
+            style="float: right; margin-left: 5px "
+          >{{ insufficientQuantity ? 'Insuficient quantity' : 'Sell' }}</button>
         </div>
       </div>
     </div>
@@ -38,7 +45,7 @@ export default {
   },
   props: ["stock"],
   computed: {
-    insufficientFunds() {
+    insufficientQuantity() {
       return this.quantity > this.stock.quantity;
     }
   },
@@ -64,5 +71,12 @@ export default {
 }
 .card-padding {
   padding: 10px;
+}
+.font-sizing {
+  font-size: 20px;
+}
+
+.img-size {
+  width: 50px;
 }
 </style>

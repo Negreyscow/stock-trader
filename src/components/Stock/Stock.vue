@@ -1,12 +1,17 @@
 <template>
-  <div class="col-md-3 card-padding">
+  <div class="card-padding">
     <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">{{ stock.name }}</h3>
-        <div class="card-subtitle">(Price: {{ stock.price | currency }})</div>
+      <div class="card-header d-flex bd-highlight">
+        <div class="p-2 flex-fill bd-highlight">
+          <h3 class="card-title font-sizing">{{ stock.name }}</h3>
+          <div class="card-subtitle">(Price: {{ stock.price | currency }})</div>
+        </div>
+        <div class="p-2 flex-fill bd-highlight">
+          <img class="img-size" :src=" '../../assets/' + stock.img">
+        </div>
       </div>
       <div class="card-body">
-        <div class="row">
+        <div class="d-flex justify-content-center">
           <input
             type="number"
             class="form-control"
@@ -19,7 +24,7 @@
             @click="buyStock()"
             class="btn btn-success"
             :disabled="insuficientFunds || quantity <= 0"
-            style="float: right; "
+            style="float: right; margin-left: 5px "
           >{{ insuficientFunds ? 'Insuficient funds' : 'Buy' }}</button>
         </div>
       </div>
@@ -48,7 +53,8 @@ export default {
       const order = {
         stockId: this.stock.id,
         stockPrice: this.stock.price,
-        quantity: this.quantity
+        quantity: this.quantity,
+        img: this.stock.img
       };
       console.log(order);
       this.$store.dispatch("buyStock", order);
@@ -64,6 +70,14 @@ export default {
 }
 
 .card-padding {
-  padding: 10px;
+  padding: 5px;
+}
+
+.font-sizing {
+  font-size: 20px;
+}
+
+.img-size {
+  width: 50px;
 }
 </style>

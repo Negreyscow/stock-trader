@@ -1,10 +1,11 @@
 <template>
   <div style="width: 80%; margin: auto; padding: 10px">
     <div class="card">
-      <div class="card-header">Hello! {{ getUsername }}, This is your special trade application</div>
+      <div
+        class="card-header text-center header-text"
+      >Hello! {{ getUsername }}, This is your special trade application</div>
       <div class="card-body">
-        <h5 class="card-title">Your funds {{ getFunds | currency}}</h5>
-        <p class="card-text">To learn purposes only</p>
+        <h5 class="card-title text-center">Your have {{ getFunds | currency}} to spend!</h5>
       </div>
     </div>
   </div>
@@ -24,4 +25,7 @@ export default {
 </script>
  
 <style>
+.header-text {
+  font-size: 20px;
+}
 </style>

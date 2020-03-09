@@ -6,7 +6,11 @@ const state = {
     idToken: null,
     userId: null,
     user: null,
-    username: null
+    uid: null,
+    username: null,
+    email: null,
+    password: null,
+    verifyPassword: null
 };
 
 const mutations = {
@@ -22,44 +26,55 @@ const mutations = {
         state.userId = null;
         state.user = null;
     },
-    storeUsername(state, name) {
-        state.username = name
+    storeUser(state, data) {
+        state.username = data.username,
+            state.email = data.email,
+            state.password = data.password,
+            state.verifyPassword = data.confirmPassword
+    },
+    setUid(state, value) {
+        state.uid = value
+    },
+    setUserList(state, value) {
+        usersList = value;
     }
 
 };
 
 const actions = {
-    getUsername({ commit, state }, uid) {
+    storeUserInfo({ commit, state }) {
         globalAxios.get('/users.json' + "?auth=" + state.idToken).then(res => {
             const data = res.data
             for (let key in data) {
-                if (data[key].userId == uid) {
-                    commit('storeUsername', data[key].username)
-                    debugger;
+                if (data[key].userId == state.uid) {
+                    commit('storeUser', data[key])
+                    commit('SET_PORTFOLIO', data[key].portfolio)
+                    commit('SET_STOCKS', data[key].stocks)
                 }
             }
-        })
+        }).catch(e => console.log(e))
     },
-    updateDatabase() {
-        const save = {
-            userId: this.$store.getters.getUserId,
-            funds: this.$store.getters.funds,
-            stockPortfolio: this.$store.getters.stockPortfolio,
-            stocks: this.$store.getters.stocks
-        };
+    updateDatabase({ commit, state }, save) {
         globalAxios
-            .get("/users.json" + "?auth=" + this.getTokenId())
+            .get("/users.json" + "?auth=" + state.idToken)
             .then(res => {
-                const data = res.data;
-                for (let key in data) {
-                    if (data[key].userId == localStorage.idUser) {
-                        globalAxios
-                            .post("stockData.json" + "?auth=" + this.getTokenId(), save)
-                            .then(res => console.log(res))
-                            .catch(err => console.log(err));
-                        console.log(data[key].email);
-                        console.log(key);
+                const users = res.data;
+                if (users != null) {
+                    for (let key in users) {
+                        if (users[key].userId == state.uid) {
+                            globalAxios
+                                .put("/users/" + key + '.json' + "?auth=" + state.idToken, save)
+                                .then(res => console.log(res))
+                                .catch(err => console.log(err));
+                            console.log('atualizou user')
+                        }
                     }
+                } else {
+                    globalAxios
+                        .post("/stockData.json" + "?auth=" + state.idToken, save)
+                        .then(res => console.log(res))
+                        .catch(err => console.log(err));
+                    console.log('cria um novo')
                 }
             });
     },
@@ -83,14 +98,13 @@ const actions = {
         )
             .then(response => {
                 localStorage.setItem('uid', response.data.localId)
-                console.log(response)
                 commit('authUser', {
                     token: response.data.idToken,
                     userId: response.data.localId
                 });
                 formData.userId = localStorage.uid;
                 dispatch('storeUser', formData);
-                router.replace({ name: 'SignIn' });
+                router.replace({ name: 'Home' });
             })
             .catch(err => console.log(err));
     },
@@ -104,14 +118,14 @@ const actions = {
             }
         )
             .then(response => {
-                console.log(response.data)
                 commit('authUser', {
                     token: response.data.idToken,
                     userId: response.data.localId,
-                    username: response.data.username
                 })
                 localStorage.setItem('uid', response.data.localId)
-                dispatch('getUsername', localStorage.uid);
+                commit('setUid', localStorage.uid)
+                dispatch('storeUserInfo')
+                dispatch('saveCompanies')
                 router.replace({ name: 'Home' });
             })
             .catch(err => console.log(err));
@@ -123,6 +137,7 @@ const actions = {
         globalAxios.post('/users.json' + '?auth=' + state.idToken, userData)
             .then(res => console.log(res))
             .catch(err => console.log(err));
+
     },
     fetchUser({ commit, state }) {
         if (!state.idToken) {
@@ -166,6 +181,21 @@ const getters = {
     },
     getUsername(state) {
         return state.username;
+    },
+    getUid(state) {
+        return state.uid;
+    },
+    username(state) {
+        return state.username;
+    },
+    password(state) {
+        return state.password
+    },
+    verifyPassword(state) {
+        return state.verifyPassword
+    },
+    email(state) {
+        return state.email
     }
 
 };

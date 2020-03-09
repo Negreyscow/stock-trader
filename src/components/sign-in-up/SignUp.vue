@@ -1,65 +1,63 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-md-12 center-col">
-        <form class="form-style">
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input
-              v-model="username"
-              type="text"
-              class="form-control"
-              id="username"
-              placeholder="Enter your username"
-            >
-          </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input
-              v-model="email"
-              type="email"
-              class="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="Enter email"
-            >
-            <small
-              id="emailHelp"
-              class="form-text text-muted"
-            >We'll never share your email with anyone else.</small>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input
-              v-model="password"
-              type="password"
-              class="form-control"
-              id="exampleInputPassword1"
-              placeholder="Password"
-            >
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword2">Confirm Password</label>
-            <input
-              v-model="confirmPassword"
-              type="password"
-              class="form-control"
-              id="exampleInputPassword2"
-              placeholder="Password"
-            >
-          </div>
-          <button type="submit" @click.prevent="onSubmit()" class="btn btn-primary">Sign Up</button>
-        </form>
-        <router-link
-          class="nav-link text-center"
-          :to="{ name: 'SignIn' }"
-          activeClass="active"
-          tag="p"
+    <form class="form-style">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          v-model="username"
+          type="text"
+          class="form-control"
+          id="username"
+          placeholder="Enter your username"
         >
-          <a>Login</a>
-        </router-link>
       </div>
-    </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input
+          v-model="email"
+          type="email"
+          class="form-control"
+          id="exampleInputEmail1"
+          aria-describedby="emailHelp"
+          placeholder="Enter email"
+        >
+        <small
+          id="emailHelp"
+          class="form-text text-muted"
+        >We'll never share your email with anyone else.</small>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input
+          v-model="password"
+          type="password"
+          class="form-control"
+          id="exampleInputPassword1"
+          placeholder="Password"
+        >
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword2">Confirm Password</label>
+        <input
+          v-model="confirmPassword"
+          type="password"
+          class="form-control"
+          id="exampleInputPassword2"
+          placeholder="Password"
+        >
+      </div>
+      <div class="d-flex justify-content-center">
+        <button type="submit" @click.prevent="onSubmit()" class="btn btn-primary">Sign Up</button>
+      </div>
+      <router-link
+        class="nav-link text-center"
+        :to="{ name: 'SignIn' }"
+        activeClass="active"
+        tag="p"
+      >
+        <a>Login</a>
+      </router-link>
+    </form>
   </div>
 </template>
 

@@ -1,12 +1,10 @@
 <template>
   <div>
     <app-header></app-header>
-    <div class="container">
-      <div class="row">
-        <transition name="slide" mode="out-in">
-          <router-view></router-view>
-        </transition>
-      </div>
+    <div class="d-flex p-2">
+      <transition name="slide" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -57,5 +55,10 @@ export default {
 .center-col {
   float: none;
   margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
 }
 </style>

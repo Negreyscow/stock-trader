@@ -3,9 +3,21 @@
     [
       "env",
       {
-        "modules": false
+        "modules": false,
+        "plugins": [
+          "transform-regenerator"
+        ]
       }
     ],
     "stage-2"
+  ],
+  "plugins": [
+    [
+      "transform-runtime",
+      {
+        "polyfill": false,
+        "regenerator": true
+      }
+    ]
   ]
 }
