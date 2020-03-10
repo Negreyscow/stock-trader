@@ -10,11 +10,10 @@ const state = {
 };
 
 const mutations = {
-    incDay(state) {
-        state.day += 1;
-    },
     saveDay(state, payload) {
-        state.days.push(payload)
+        const stocks = JSON.parse(JSON.stringify(payload))
+        state.days.push(stocks)
+        state.day += 1;
     },
     saveCompanies(state) {
         state.companies = stocks
@@ -90,9 +89,6 @@ const actions = {
         commit('saveCompanies')
     },
 
-    nextDay({ commit, rootState }) {
-        commit('incDay')
-    },
     saveDay({ state, rootState }, data) {
         globalAxios.get("/users.json" + "?auth=" + rootState.session.idToken)
             .then(res => {
@@ -115,7 +111,7 @@ const getters = {
     getDay(state) {
         return state.day
     },
-    getDays(state) {
+    historicalStocksPrice(state) {
         return state.days
     },
     getCompanies(state) {

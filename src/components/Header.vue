@@ -1,6 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg nav-color">
-    <router-link class="navbar-brand" :to="{ name: 'Home'}" style="margin-left: 50px">Stock Trader</router-link>
+    <router-link class="navbar-brand" :to="{ name: 'Home'}" style="margin-left: 50px">
+      Stock Trader
+    </router-link>
+
     <div class="center-col">
       <button
         class="navbar-toggler"
@@ -15,8 +18,11 @@
         <img src="https://img.icons8.com/ios/28/000000/menu.png">
       </button>
     </div>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
       <ul class="navbar-nav mr-auto">
+
         <router-link
           class="nav-item"
           tag="li"
@@ -26,6 +32,7 @@
         >
           <a class="nav-link">Portfolio</a>
         </router-link>
+
         <router-link
           class="nav-item"
           v-if="isAuthorized()"
@@ -35,6 +42,7 @@
         >
           <a class="nav-link">Stocks</a>
         </router-link>
+
         <router-link
           class="nav-item"
           v-if="isAuthorized()"
@@ -44,33 +52,42 @@
         >
           <a class="nav-link">Price Variation</a>
         </router-link>
+
       </ul>
+
       <ul class="navbar-nav navbar-right" style="margin-right: 50px">
+
         <li class="nav-item" v-if="isAuthorized()">
           <a class="nav-link" href="#">
             <strong>Founds: {{ getFunds | currency}}</strong>
           </a>
         </li>
+
         <li class="nav-item" v-if="isAuthorized()">
           <a class="nav-link" href="#" @click="justSync()">
             <img src="https://img.icons8.com/wired/20/000000/upload-to-cloud.png" alt="Sync">
           </a>
         </li>
+
         <li class="nav-item" v-if="isAuthorized()">
           <h6 class="nav-link" style="padding: 0; margin-top: 10px">Day {{ nowDay() }}</h6>
         </li>
+        
         <li class="nav-item" v-if="isAuthorized()">
-          <a class="nav-link" href="#" @click="endDay()">
+          <a class="nav-link" href="#" @click="nextDay()">
             <img src="https://img.icons8.com/ios/20/000000/end-filled.png">
           </a>
         </li>
+
         <li class="nav-item log-out" v-if="isAuthorized()">
           <a class="nav-link" href="#" @click="logOut()">
             <img src="https://img.icons8.com/ios/15/000000/exit.png">
           </a>
         </li>
+
       </ul>
     </div>
+    
   </nav>
 </template>
 <script>
@@ -94,7 +111,8 @@ export default {
     ...mapActions({
       randomizeStocks: "randomizeStocks",
       logout: "logout",
-      sync: "updateDatabase"
+      sync: "updateDatabase",
+      nextDay: "nextDay"
     }),
     ...mapGetters({
       getId: "getUserId",
@@ -102,9 +120,7 @@ export default {
       getTokenId: "getIdToken",
       getDay: "getDay"
     }),
-    endDay() {
-      this.randomizeStocks();
-    },
+
     justSync() {
       const portfolio = {
         funds: this.$store.getters.funds,

@@ -5,6 +5,33 @@ export const orderStocksMixin = {
             selected: ""
         };
     },
+
+    props: {
+        isStocks: {
+            type: Boolean,
+            required: true,
+            default: false
+        }
+    },
+
+    created(){
+        this.$emit('updateStocks', this.stocks)
+    },
+
+    watch: {
+        selected() {
+            this.updateItems()
+        }
+    },
+    
+    computed: {
+        stocks() {
+            if (this.isStocks)
+                return this.$store.getters.stocks
+            return this.$store.getters.stockPortfolio;
+        }
+    },
+
     methods: {
 
         ordering(){
@@ -25,7 +52,9 @@ export const orderStocksMixin = {
                     this.orderName();
                 }
             }
+            this.$emit('updateStocks', this.stocks)
         },
+
         orderPrice() {
             if (this.order == "Ascending") {
                 this.orderByPriceAsc();
@@ -33,6 +62,7 @@ export const orderStocksMixin = {
                 this.orderByPriceDes();
             }
         },
+
         orderName() {
             if (this.order == "Ascending") {
                 this.orderByNameAsc();
@@ -40,6 +70,7 @@ export const orderStocksMixin = {
                 this.orderByNameDes();
             }
         },
+
         orderByPriceDes() {
             this.stocks.sort(function (a, b) {
                 return b.price - a.price;

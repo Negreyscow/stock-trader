@@ -47,10 +47,9 @@ const actions = {
         commit('SET_STOCKS_INIT', stocks);
     },
 
-    randomizeStocks: ({ commit, dispatch }) => {
+    nextDay: ({ commit }) => {
+        commit('saveDay', state.stocks)
         commit('RND_STOCKS', stocks);
-        dispatch('saveDay', state.stocks)
-        dispatch('nextDay')
     }
 }
 
